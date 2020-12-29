@@ -1,0 +1,73 @@
+﻿@page "/"
+@inject DataToPass scopedClass
+
+<h4>Examples of how to pass data between Blazor pages/components - Blazor Server</h4>
+
+<p>
+    I've just started learning Blazor and as I'm learning I like to collect useful info from around the web and give what I find a go. Sometimes the examples I find can be a bit daunting and sometimes
+    they are concept based, don't quite work if pasted in verbatim and need a little extra work. So to this end, I like to make my own simple examples based on what I've found. Hopefully these examples might be of use to others.
+    They are all super basic and may not be 100% correct (i'm still learning), but they do exactly what they are supposed to do without any frills. I should say again, these are my notes to myself, for when I forget how
+    to do certain tasks...
+</p>
+<p>
+    Take a look at the code in this site and it should help you on your way
+</p>
+<p>
+    Here are 3 examples of passing data from page to page (or page to component). There are others ways, such as passing using routing with lots of simple examples available on the Web
+    and still other ways which can get quite complex. I like to start with as simple as possible then add my own stuff to them once I understand better what I'm doing.
+</p>
+
+<p> <b>Example 1</b> is shown within this page. A class with data is passed from index.razor to and embedded page/component, ChildComponent.razor. It shows simple passing to components as parameters. </p>
+<p> <b>Example 2</b> is shown by clicking the counter page. The data is set in this index page and held in a scoped class which is injected into the counter page</p>
+<p>
+    <b>Example 3</b> Not all functionality is available within Blazor. A good example would be Request.HttpContext.Connection.RemoteIpAddress, on a live Blazor server it doesn't work. 
+    Luckily it does work in Razor pages (cshtml). A work around is to use the _host.cshtm page to capture the data, and then pass the captured data to the child pages using Cascading values.
+    You have to be a little careful as the _host.cshtm page isn't updated during blazor page changes.<br /><br />
+    I found this example at <b>
+        <a href="https://stackoverflow.com/questions/57982444/how-do-i-get-client-ip-and-browser-info-in-blazor">Stack Overflow</a>
+        item 2 by <a href="https://stackoverflow.com/users/460298/dmitry">Dmitry</a>
+    </b> and modified it to my own ends. The example is excellent, but when I tried it, i got a bit confused with the _Host.cshtm and ended up creating typeof(App) twice, so
+    hopefully putting it in this working with extra comments example will help even more.
+    <br />
+    So in order...
+    <br />
+    1) The class DataToPassCascaded is a simple class which when created holds the data we want to share. This can be whatever you want it to be.<br />
+    2) _Host.cshtml needs modifying to capture the Blazor we can't read from within the Blazor page<br />
+    3) App.razor accepts the information and then converts it into a style for the Blazor pages<br />
+    4) FetchData.razor shows how to read the cascading value.<br />
+
+</p>
+
+<br />
+<h4> And the results of Example 1....</h4>
+
+<!-- Message is the name of the component or page the data is being passed to
+// receivingClassName is the name (not type) of the class to be used to receive the data in the child page. Red means it isn't defined in the child page
+// parentData is the class name in this page that holds our data. The name of the intantiated class that receives it can be differenent
+// there is no explicit declaration of datatype, if the parent and child don't match you get a runtime error so be carefull!!-->
+    This is from Example one and uses a new Blazor component created in Pages, called ChildComponent.razor. The border shows the extent of the component
+<br />
+<br />
+<div class="border">
+    <br />
+    <!--Make the data available for the child class-->
+    <ChildComponent receivingClassName="parameterData"></ChildComponent>
+    <br />
+</div>
+
+@code{
+    // create a class of type data to pass here in the parent.
+    DataToPass parameterData = new DataToPass();
+
+    protected override void OnInitialized()
+    {
+        parameterData.StringData = "Parameterised Data from index.razor";
+        parameterData.IntData = 123;
+
+        scopedClass.IntData = 456;
+        scopedClass.StringData = "Scoped Data";
+
+    }
+
+
+}

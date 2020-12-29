@@ -1,0 +1,20 @@
+﻿<!-- Take the value (in this case our object) and add it as a cascading value to all child pages here-->
+<CascadingValue Value="dataToPassParam">
+    <Router AppAssembly="@typeof(Program).Assembly">
+        <Found Context="routeData">
+            <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        </Found>
+        <NotFound>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <p>Sorry, there's nothing at this address.</p>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingValue>
+@code {
+    // the Data is picked up here from _Host.cshtml.
+    // be carefull of the type, it has to match the orignal type, and the instance Parameter.
+    // it has to match the bit after the hyphon in param-dataToPassParam in the _Host.cshtml page
+    [Parameter]
+    public DataToPassCascaded? dataToPassParam { get; set; }
+}

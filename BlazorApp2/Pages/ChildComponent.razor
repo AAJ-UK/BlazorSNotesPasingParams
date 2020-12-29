@@ -1,0 +1,18 @@
+﻿This is in the ChildComponent.razor component....
+<br />
+@receivingClassName.StringData
+<br />
+@receivingClassName.IntData
+
+
+@code {
+    // this is the child page. Use the same class as the parent page for the parameter
+    [Parameter]
+    public DataToPass receivingClassName { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+
+    }
+}

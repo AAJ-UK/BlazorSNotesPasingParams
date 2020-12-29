@@ -1,0 +1,45 @@
+﻿@page "/counter"
+<!-- get an injected instance of the class used for passing data. This has already been set up on the parent page-->
+@inject DataToPass scopedClass
+
+<h1>This data has been passed as a Scoped Class from Index.razor</h1>
+<br />
+<br />
+    The data below has been INJECTED as a scoped class. See Startup.cs for how to use your class as a service.
+    The scope means the class exists for this client only. If it was a singelton, EVERY client would be modifying the same data which would not be suitable in the real world with multiple clients.
+<br />
+<br />
+    This method is great for passing data between different razor pages.
+    The issue comes when you pass from cshtml (e.g hosts.cshtml). It doesn't work, it passes null. You cant use a singleton either (see above)
+<br />
+
+<div class="border">
+    <br />
+    @scopedClass.StringData
+    <br />
+    @scopedClass.IntData
+    <br />
+</div>
+
+<br />
+<br />
+<br />
+<br />
+
+
+<h1>Counter</h1>
+
+<p>Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+
+@code {
+
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+}
